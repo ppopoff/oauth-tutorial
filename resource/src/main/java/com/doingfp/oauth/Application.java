@@ -7,8 +7,8 @@ import org.springframework.boot.web.support.SpringBootServletInitializer;
 
 @SpringBootApplication
 //@Import({ ServerSecurityConfig.class, OAuth2ResourceServerConfig.class })
-public class ResourceApplication extends SpringBootServletInitializer {
+public class Application extends SpringBootServletInitializer {
     public static void main(String[] args) {
-        SpringApplication.run(ResourceApplication.class, args);
+        SpringApplication.run(Application.class, args);
     }
 }
