@@ -71,9 +71,10 @@ public class AuthServerOAuth2Config extends AuthorizationServerConfigurerAdapter
     @Primary
     @Bean
     public RemoteTokenServices tokenService() {
+        final String baseUrl = env.getProperty("resource.baseUrl");
+
         RemoteTokenServices tokenService = new RemoteTokenServices();
-        tokenService.setCheckTokenEndpointUrl(
-                "http://localhost:8000/spring-security-oauth-server/oauth/check_token");
+        tokenService.setCheckTokenEndpointUrl(baseUrl + "/spring-security-oauth-server/oauth/check_token");
         tokenService.setClientId("fooClientIdPassword");
         tokenService.setClientSecret("secret");
         return tokenService;
