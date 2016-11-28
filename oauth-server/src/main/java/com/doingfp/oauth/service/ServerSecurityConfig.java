@@ -1,4 +1,4 @@
-package com.doingfp.oauth;
+package com.doingfp.oauth.service;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
