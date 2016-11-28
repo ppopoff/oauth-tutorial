@@ -4,17 +4,13 @@ import org.springframework.beans.factory.annotation.*;
 import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.Resource;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import org.springframework.jdbc.datasource.init.*;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.*;
 import org.springframework.security.oauth2.config.annotation.web.configurers.*;
 import org.springframework.security.oauth2.provider.token.RemoteTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenStore;
-import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
-
-import javax.sql.DataSource;
+import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore;
 
 
 /**
@@ -41,12 +37,12 @@ public class AuthServerOAuth2Config extends AuthorizationServerConfigurerAdapter
 
     @Override
     public void configure(final AuthorizationServerSecurityConfigurer oauthServer) throws Exception {
-        oauthServer.tokenKeyAccess("permitAll()").checkTokenAccess("isAuthenticated()");
+        oauthServer.allowFormAuthenticationForClients();
     }
 
     @Override
     public void configure(final ClientDetailsServiceConfigurer clients) throws Exception {
-        clients.jdbc(dataSource())
+        clients.inMemory()
           .withClient("sampleClientId")
           .authorizedGrantTypes("implicit")
           .scopes("read")
@@ -64,35 +60,8 @@ public class AuthServerOAuth2Config extends AuthorizationServerConfigurerAdapter
     }
 
     @Bean
-    private TokenStore tokenStore() {
-        return new JdbcTokenStore(dataSource());
-    }
-
-
-    /// Data source configuration
-    /// -------------------------------------------------------------------------------
-    @Bean
-    public DataSourceInitializer dataSourceInitializer(final DataSource dataSource) {
-        DataSourceInitializer initializer = new DataSourceInitializer();
-        initializer.setDataSource(dataSource);
-        initializer.setDatabasePopulator(databasePopulator());
-        return initializer;
-    }
-
-    private DatabasePopulator databasePopulator() {
-        ResourceDatabasePopulator populator = new ResourceDatabasePopulator();
-        populator.addScript(schemaScript);
-        return populator;
-    }
-
-    @Bean
-    private DataSource dataSource() {
-        DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName(env.getProperty("jdbc.driverClassName"));
-        dataSource.setUrl(env.getProperty("jdbc.url"));
-        dataSource.setUsername(env.getProperty("jdbc.user"));
-        dataSource.setPassword(env.getProperty("jdbc.pass"));
-        return dataSource;
+    public TokenStore tokenStore() {
+        return new InMemoryTokenStore();
     }
     // ----------------------------------------------------------------------------------
 
