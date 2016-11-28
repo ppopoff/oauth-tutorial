@@ -1,0 +1,13 @@
+# Gitignore for the project
+
+# maven foders
+target
+
+# vim files
+.sw*
+
+# idea files
+*.iml
+idea
+.idea
+
