@@ -20,7 +20,7 @@ import org.springframework.security.oauth2.provider.token.store.InMemoryTokenSto
  * We registered another client and authorized the “password“, “authorization_code” and “refresh_token” grant types
  * In order to use the “password” grant type we need to wire in and use the AuthenticationManager bean
  */
-//@Configuration
+@Configuration
 @EnableAuthorizationServer
 public class AuthServerOAuth2Config extends AuthorizationServerConfigurerAdapter {
 
