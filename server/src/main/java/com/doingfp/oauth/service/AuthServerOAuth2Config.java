@@ -79,4 +79,21 @@ public class AuthServerOAuth2Config extends AuthorizationServerConfigurerAdapter
         tokenService.setClientSecret("secret");
         return tokenService;
     }
+
+
+    /*
+    @Bean
+    public TokenStore tokenStore() {
+    return new JwtTokenStore(accessTokenConverter());
+    }
+
+    @Bean
+    public JwtAccessTokenConverter accessTokenConverter() {
+    final JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
+    // converter.setSigningKey("123");
+    final KeyStoreKeyFactory keyStoreKeyFactory = new KeyStoreKeyFactory(new ClassPathResource("mytest.jks"), "mypass".toCharArray());
+    converter.setKeyPair(keyStoreKeyFactory.getKeyPair("mytest"));
+    return converter;
+    }
+    */
 }
