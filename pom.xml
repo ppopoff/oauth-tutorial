@@ -1,6 +1,5 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
 
@@ -8,11 +7,11 @@
     <!-- project header -->
     <groupId>com.doingfp.oauth</groupId>
     <artifactId>oauth-tutorial</artifactId>
-    <packaging>jar</packaging>
-    <version>0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
     <name>oauth-tutorial</name>
+    <version>1.0.0-SNAPSHOT</version>
 
-
+    <!-- Spring boot module as a parent -->
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
@@ -20,14 +19,18 @@
     </parent>
 
 
+    <modules>
+        <module>server</module>
+        <module>resource</module>
+    </modules>
+
+
     <properties>
         <!-- Spring -->
         <oauth.version>2.0.12.RELEASE</oauth.version>
 
-
         <!-- utils version -->
         <mysql.connector.version>6.0.5</mysql.connector.version>
-        <commons-lang.version>3.5</commons-lang.version>
 
         <!-- logging -->
         <org.slf4j.version>1.7.12</org.slf4j.version>
@@ -46,66 +49,11 @@
     </properties>
 
 
-
-    <dependencies>
-        <!-- runtime dependencies -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-jdbc</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-thymeleaf</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.security.oauth</groupId>
-            <artifactId>spring-security-oauth2</artifactId>
-            <version>${oauth.version}</version>
-        </dependency>
-
-        <!-- mysql connector -->
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>${mysql.connector.version}</version>
-            <scope>runtime</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>${jackson.version}</version>
-        </dependency>
-
-
-        <!-- utils -->
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-            <version>${commons-lang.version}</version>
-        </dependency>
-
-         <!-- test dependencies -->
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>${junit.version}</version>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
-
     <build>
-        <finalName>spring-security-oauth</finalName>
+        <finalName>oauth-tutorial</finalName>
+
         <pluginManagement>
             <plugins>
-
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
@@ -124,23 +72,6 @@
                         <failOnMissingWebXml>false</failOnMissingWebXml>
                     </configuration>
                 </plugin>
-
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-surefire-plugin</artifactId>
-                    <version>${maven-surefire-plugin.version}</version>
-                    <configuration>
-                        <testFailureIgnore>true</testFailureIgnore>
-                        <excludes>
-                            <!-- <exclude>**/*IntegrationTest.java</exclude> -->
-                            <exclude>**/*LiveTest.java</exclude>
-                        </excludes>
-                        <systemPropertyVariables>
-                            <!-- <provPersistenceTarget>h2</provPersistenceTarget> -->
-                        </systemPropertyVariables>
-                    </configuration>
-                </plugin>
-
             </plugins>
         </pluginManagement>
     </build>
