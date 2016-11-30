@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Demo client application</title>
+    <script src="https://code.jquery.com/jquery-2.2.2.min.js"></script>
+    <link rel="shortcut icon" type="image/x-icon" href="/img/hive.ico">
+</head>
+<body>
+<h2>This is the response that the client application gets</h2>
+<textarea id="result"
+          style="margin: 0px; width: 1500px; height: 150px; word-wrap: normal; white-space: pre; overflow-x: scroll">
+</textarea>
+<p id="error" style="color:red">
+</p>
+Set the authentication parameters in the
+<select id="authenticationParameters">
+    <option value="header">header</option>
+    <option value="request">request</option>
+</select>
+</br>
+<br/>
+<div>Client id</div>
+<input id="client_id" type="text" value="test">
+<div>Client secret</div>
+<input id="client_secret" type="text" value="test">
+<br/>
+<br/>
+<button value="Request an access token" id="accessTokenRequest">Request an access token</button>
+<button value="Request a refresh token" id="refreshTokenRequest">Request a refresh token</button>
+
+<div>
+    <p>
+        <a href="/oauth/authorize?response_type=code&client_id=test&redirect_uri=http://localhost:8080/test.html">AUTHORIZE!</a>
+    </p>
+</div>
+</body>
+<script type="text/javascript">
+    var code = window.location.search.substring(6, 12);
+    var redirect_url = window.location.href;
+    redirect_url = redirect_url.replace(window.location.search, "");
+    var refresh_token = "";
+
+    $("#accessTokenRequest").click(function () {
+        var client_id = $("#client_id").val();
+        var client_secret = $("#client_secret").val();
+
+        var authentication = $("#authenticationParameters").val();
+        var headers = {};
+
+        var data = {
+            "grant_type": "authorization_code",
+            "code": code,
+            "redirect_uri": redirect_url
+        }
+
+        if (authentication === "header") {
+            headers = {"Authorization": "Basic " + btoa(client_id + ":" + client_secret)};
+        } else {
+            data["client_id"] = client_id;
+            data["client_secret"] = client_secret;
+        }
+
+        $.ajax({
+            type: "POST",
+            url: window.location.origin + "/oauth/token",
+            "data": data,
+            "headers": headers,
+            type: "POST"
+        }).done(function (resp) {
+            $("#result").val(JSON.stringify(resp, null, '\t'));
+            refresh_token = resp['refresh_token'];
+        }).error(function (error) {
+            $("#error").text(error.responseText);
+        });
+    });
+
+    $("#refreshTokenRequest").click(function () {
+        var client_id = $("#client_id").val();
+        var client_secret = $("#client_secret").val();
+
+        $.ajax({
+            type: "POST",
+            url: window.location.origin + "/oauth/token",
+            "data": {
+                "grant_type": "refresh_token",
+                "refresh_token": refresh_token,
+                "redirect_uri": redirect_url
+            },
+            "headers": {"Authorization": "Basic " + btoa(client_id + ":" + client_secret)},
+            type: "POST"
+        }).done(function (resp) {
+            $("#result").val(JSON.stringify(resp, null, '\t'));
+            refresh_token = resp['refresh_token'];
+        }).error(function (error) {
+            $("#error").text(error.responseText);
+        });
+    })
+</script>
+</html>

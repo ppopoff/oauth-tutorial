@@ -11,7 +11,6 @@ import org.springframework.security.oauth2.provider.token.store.InMemoryTokenSto
 
 
 @Configuration
-@EnableResourceServer
 public class OAuthResourceServerConfig extends ResourceServerConfigurerAdapter {
 
     @Override
