@@ -11,7 +11,7 @@ import org.springframework.core.annotation.Order;
 
 @Configuration
 @EnableWebSecurity
-@Order(2)
+//@Order(2)
 public class ServerSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
