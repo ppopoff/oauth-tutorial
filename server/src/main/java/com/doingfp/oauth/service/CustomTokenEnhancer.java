@@ -5,18 +5,15 @@ import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 
-public class LocationTokenAppender implements TokenEnhancer{
+import java.util.HashMap;
+import java.util.Map;
 
-    // for now returns token as it is
-
-    /**
-     * TODO: append location info to JWT token
-     */
+public class CustomTokenEnhancer implements TokenEnhancer {
     @Override
     public OAuth2AccessToken enhance(OAuth2AccessToken accessToken, OAuth2Authentication authentication) {
-        //final Map<String, Object> additionalInfo = new HashMap<>();
-        //Object organization = additionalInfo.put("organization", authentication.getName() + randomAlphabetic(4));
-        //((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(additionalInfo);
+        final Map<String, Object> additionalInfo = new HashMap<>();
+        additionalInfo.put("loc", "Voronezh");
+        ((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(additionalInfo);
         return accessToken;
     }
 }
