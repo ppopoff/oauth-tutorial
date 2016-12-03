@@ -2,7 +2,6 @@ package com.doingfp.oauth.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -36,16 +35,8 @@ public class AuthServerOAuth2Config extends AuthorizationServerConfigurerAdapter
     @Qualifier("authenticationManagerBean")
     private AuthenticationManager authenticationManager;
 
-//    @Value("classpath:schema.sql")
-//    private Resource schemaScript;
-
     @Autowired
     private Environment env;
-
-//    @Override
-//    public void configure(final AuthorizationServerSecurityConfigurer oauthServer) throws Exception {
-//        oauthServer.allowFormAuthenticationForClients();
-//    }
 
     /**
      * @param clients a number of clients to configure
@@ -89,6 +80,10 @@ public class AuthServerOAuth2Config extends AuthorizationServerConfigurerAdapter
         return converter;
     }
 
+
+    /**
+     * In case you want to use a keystore
+     */
 //    @Bean
 //    public JwtAccessTokenConverter accessTokenConverter() {
 //        JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
@@ -104,8 +99,6 @@ public class AuthServerOAuth2Config extends AuthorizationServerConfigurerAdapter
     public DefaultTokenServices tokenServices() {
         final DefaultTokenServices defaultTokenServices = new DefaultTokenServices();
         defaultTokenServices.setTokenStore(jwtTokenStore());
-        //defaultTokenServices.setSupportRefreshToken(true);
         return defaultTokenServices;
     }
-
 }
